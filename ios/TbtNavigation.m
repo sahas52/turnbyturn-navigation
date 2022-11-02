@@ -8,7 +8,9 @@
 #import <Foundation/Foundation.h>
 #import "React/RCTBridgeModule.h"
 @interface RCT_EXTERN_MODULE(TbtNavigation, NSObject)
-  RCT_EXTERN_METHOD(simpleMethod)
+  RCT_EXTERN_METHOD(simpleMethod:
+    (NSArray) coords
+  )
   RCT_EXTERN_METHOD(simpleMethodReturns:
     (RCTResponseSenderBlock) callback
   )

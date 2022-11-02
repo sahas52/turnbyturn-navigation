@@ -14,11 +14,11 @@ PODS:
   - MapboxCommon (20.1.2)
   - MapboxCoreMaps (10.1.1):
     - MapboxCommon (~> 20.1)
-  - MapboxCoreNavigation (2.0.1):
+  - MapboxCoreNavigation (2.0.0):
     - MapboxDirections (~> 2.0)
     - MapboxMobileEvents (~> 1.0)
     - MapboxNavigationNative (~> 69.0)
-  - MapboxDirections (2.6.0):
+  - MapboxDirections (2.7.0):
     - Polyline (~> 5.0)
     - Turf (~> 2.4)
   - MapboxMaps (10.1.2):
@@ -27,15 +27,15 @@ PODS:
     - MapboxMobileEvents (= 1.0.6)
     - Turf (~> 2.0)
   - MapboxMobileEvents (1.0.6)
-  - MapboxNavigation (2.0.1):
-    - MapboxCoreNavigation (= 2.0.1)
+  - MapboxNavigation (2.0.0):
+    - MapboxCoreNavigation (= 2.0.0)
     - MapboxMaps (~> 10.0)
     - MapboxMobileEvents (~> 1.0)
     - MapboxSpeech (~> 2.0)
     - Solar-dev (~> 3.0)
   - MapboxNavigationNative (69.0.4):
     - MapboxCommon (~> 20.0)
-  - MapboxSpeech (2.0.1)
+  - MapboxSpeech (2.1.0)
   - Polyline (5.0.2)
   - RCT-Folly (2021.06.28.00-v2):
     - boost
@@ -319,8 +319,8 @@ DEPENDENCIES:
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
-  - MapboxCoreNavigation (from `https://github.com/mapbox/mapbox-navigation-ios.git`, tag `v2.0.1`)
-  - MapboxNavigation (from `https://github.com/mapbox/mapbox-navigation-ios.git`, tag `v2.0.1`)
+  - MapboxCoreNavigation (from `https://github.com/mapbox/mapbox-navigation-ios.git`, tag `v2.0.0`)
+  - MapboxNavigation (from `https://github.com/mapbox/mapbox-navigation-ios.git`, tag `v2.0.0`)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -377,10 +377,10 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   MapboxCoreNavigation:
     :git: https://github.com/mapbox/mapbox-navigation-ios.git
-    :tag: v2.0.1
+    :tag: v2.0.0
   MapboxNavigation:
     :git: https://github.com/mapbox/mapbox-navigation-ios.git
-    :tag: v2.0.1
+    :tag: v2.0.0
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -437,10 +437,10 @@ EXTERNAL SOURCES:
 CHECKOUT OPTIONS:
   MapboxCoreNavigation:
     :git: https://github.com/mapbox/mapbox-navigation-ios.git
-    :tag: v2.0.1
+    :tag: v2.0.0
   MapboxNavigation:
     :git: https://github.com/mapbox/mapbox-navigation-ios.git
-    :tag: v2.0.1
+    :tag: v2.0.0
 
 SPEC CHECKSUMS:
   boost: a7c83b31436843459a1961bfd74b96033dc77234
@@ -451,13 +451,13 @@ SPEC CHECKSUMS:
   glog: 476ee3e89abb49e07f822b48323c51c57124b572
   MapboxCommon: f15bb4cc4810d8d72e2d72bf2295f3f0cb328b11
   MapboxCoreMaps: ee3d7f31efbbafe81ce33907b6a96066e111a244
-  MapboxCoreNavigation: 6b523a368630727659422744167fd88a7b158e01
-  MapboxDirections: 4a51348c02146bd246ce67c3e3d06e809003fbba
+  MapboxCoreNavigation: a80db70b5f34cb74815633e78e44da9c381032f9
+  MapboxDirections: 04405deb646d6549c6a891447d990c28a7dd910b
   MapboxMaps: e4c4620a76b9e26a5d6cae10ffee5681a135b3de
   MapboxMobileEvents: 14d7ac3ee95b4142c4fec2205dfd48ff453e8871
-  MapboxNavigation: 64530555dea0a6db0064eb4f33f9e89d3315bb07
+  MapboxNavigation: ec1aa7093c5118a6d2f688e2b11b48b5b794a3e1
   MapboxNavigationNative: ac040fa85ccdde45da93eeb5a48aa4225ac79204
-  MapboxSpeech: fb9129e1ca7cc2dd465397d2aea1f5f510de260e
+  MapboxSpeech: a3789121e8d91eb9bc9af6ddd60768729a918f71
   Polyline: fce41d72e1146c41c6d081f7656827226f643dff
   RCT-Folly: 4d8508a426467c48885f1151029bc15fa5d7b3b8
   RCTRequired: bab4a7c3d7eb9553b13773ee190f279712efd1fc
@@ -488,6 +488,6 @@ SPEC CHECKSUMS:
   Turf: 8adf034c2963a0e587b979c51b5c12c396e29c44
   Yoga: 6671cf077f614314c22fd09ddf87d7abeee64e96
 
-PODFILE CHECKSUM: 2a6e5a44e3f2c9e504949c2150fd86e77964b903
+PODFILE CHECKSUM: 2e0572fe70028331229d7e63e255a31eef443357
 
 COCOAPODS: 1.11.3

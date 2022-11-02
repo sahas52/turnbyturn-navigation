@@ -11,8 +11,8 @@ target 'MapboxNavigation5' do
 
   # pod 'MapboxNavigation', '~> 2.0'
 
-  pod 'MapboxCoreNavigation', :git => 'https://github.com/mapbox/mapbox-navigation-ios.git', :tag => 'v2.0.1'
-  pod 'MapboxNavigation', :git => 'https://github.com/mapbox/mapbox-navigation-ios.git', :tag => 'v2.0.1'
+  pod 'MapboxCoreNavigation', :git => 'https://github.com/mapbox/mapbox-navigation-ios.git', :tag => 'v2.0.0'
+  pod 'MapboxNavigation', :git => 'https://github.com/mapbox/mapbox-navigation-ios.git', :tag => 'v2.0.0'
   # Flags change depending on the env values.
   flags = get_default_flags()
 

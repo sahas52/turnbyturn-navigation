@@ -34,7 +34,28 @@ const App: () => Node = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
   const nativeSimpleMethod = () => {
-    TbtNavigation.simpleMethod();
+    let data = Array([
+      [37.74682893940135, -122.41241455078125],
+      [37.74683374310583, -122.41241505989632],
+      [37.7467751, -122.4135351],
+      [37.747171, -122.413571],
+      [37.7473424, -122.41479700000001],
+      [37.747424, -122.4148638],
+      [37.7481097, -122.4149282],
+      [37.7481146, -122.41501500000001],
+      [37.749165000000005, -122.41611590000001],
+      [37.7490303, -122.41828860000001],
+      [37.752422, -122.418518],
+    ]);
+
+    let data1 = [
+      [1, 2, 3],
+      [1, 2, 3],
+      [1, 2, 3],
+      [1, 2, 3],
+      [1, 2, 3],
+    ];
+    TbtNavigation.simpleMethod(data);
   };
   const nativeSimpleMethodReturns = () => {
     TbtNavigation.simpleMethodReturns(result => {

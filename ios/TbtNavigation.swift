@@ -6,39 +6,62 @@
 //
 
 import Foundation
-import MapboxDirections
+import UIKit
+import MapboxMaps
 import MapboxCoreNavigation
 import MapboxNavigation
+import MapboxDirections
 
 @objc(TbtNavigation) class TbtNavigation: NSObject {
   @objc static func requiresMainQueueSetup() -> Bool { return true }
   
-  @objc public func simpleMethod() {
-    let origin = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 38.9131752, longitude: -77.0324047), name: "Mapbox")
-    let destination = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 38.8977, longitude: -77.0365), name: "White House")
+  @objc public func simpleMethod(_ coords : NSArray) {
+    
+    var cllocationsData1 = [Waypoint]()
+    
+    let a = coords[0] as! Array<Any>
+    
+    for data1 in a {
+      let temp = data1 as! Array<Double>
+      print(temp)
+      print("type of temp \(type(of: temp))")
+      print("lat \(temp[0])")
+      print("lon \(temp[0])")
+      
+      cllocationsData1.append(Waypoint(coordinate: CLLocationCoordinate2D(latitude: temp[0], longitude: temp[1])))
+    }
+
+    let origin = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 37.74682893940135, longitude: -122.41241455078125), name: "Origin")
+    let destination = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 37.779398571318765, longitude: -122.22290039062499), name: "Destination")
+            
+    
+    let routeOptions = NavigationRouteOptions(waypoints: cllocationsData1)
     
     // Set options
-    let routeOptions = NavigationRouteOptions(waypoints: [origin, destination])
+//    let routeOptions = NavigationRouteOptions(waypoints: [origin, destination])
     
-    Directions.shared.calculate(routeOptions) { [weak self] (session, result) in
-      
+    Directions.shared.calculate(routeOptions) {[weak self] (_, result) in
         switch result {
         case .failure(let error):
-            print(error.localizedDescription)
+          print(error.localizedDescription)
+          
         case .success(let response):
-          
-          print("response: '\(response)'")
-          let navigationService = MapboxNavigationService(routeResponse: response, routeIndex: 0, routeOptions: routeOptions, simulating:  .always)
-          
-          let navigationOptions = NavigationOptions(styles: [CustomDayStyle(), CustomNightStyle()], navigationService: navigationService)
-          
-          
-            // Pass the generated route response to the the NavigationViewController
-            let viewController = NavigationViewController(for: response, routeIndex: 0, routeOptions: routeOptions, navigationOptions: navigationOptions)
-          
-            viewController.modalPresentationStyle = .fullScreen
-          viewController.routeLineTracksTraversal = true
+          guard let weakSelf = self else {
+            return
+          }
 
+          let navigationService = MapboxNavigationService(routeResponse: response, routeIndex: 0, routeOptions: routeOptions, simulating: .always)
+          navigationService.router.reroutesProactively = false
+
+          let navigationOptions = NavigationOptions(styles: [CustomDayStyle()], navigationService: navigationService)
+            // Pass the generated route response to the the NavigationViewController
+          let viewController = NavigationViewController(for: response, routeIndex: 0, routeOptions: routeOptions, navigationOptions: navigationOptions)
+          
+          
+          
+          
+          viewController.modalPresentationStyle = .fullScreen
+          
           
           let appDelegate = UIApplication.shared.delegate
           appDelegate!.window!!.rootViewController!.present(viewController, animated: true, completion: nil)
@@ -77,57 +100,60 @@ private let secondaryLabelColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha
  
 required init() {
 super.init()
-mapStyleURL = URL(string: "mapbox://styles/mapbox/satellite-streets-v9")!
+mapStyleURL = URL(string: "mapbox://styles/mapbox/streets-v11")!
 styleType = .day
 }
  
 override func apply() {
 super.apply()
-ArrivalTimeLabel.appearance().textColor = lightGrayColor
-BottomBannerView.appearance().backgroundColor = secondaryBackgroundColor
-Button.appearance().textColor = #colorLiteral(red: 0.9842069745, green: 0.9843751788, blue: 0.9841964841, alpha: 1)
-CancelButton.appearance().tintColor = lightGrayColor
-DistanceLabel.appearance(whenContainedInInstancesOf: [InstructionsBannerView.self]).unitTextColor = secondaryLabelColor
-DistanceLabel.appearance(whenContainedInInstancesOf: [InstructionsBannerView.self]).valueTextColor = primaryLabelColor
-DistanceLabel.appearance(whenContainedInInstancesOf: [StepInstructionsView.self]).unitTextColor = lightGrayColor
-DistanceLabel.appearance(whenContainedInInstancesOf: [StepInstructionsView.self]).valueTextColor = darkGrayColor
-DistanceRemainingLabel.appearance().textColor = lightGrayColor
-DismissButton.appearance().textColor = darkGrayColor
-FloatingButton.appearance().backgroundColor = #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 1)
-FloatingButton.appearance().tintColor = blueColor
-InstructionsBannerView.appearance().backgroundColor = backgroundColor
-LanesView.appearance().backgroundColor = darkBackgroundColor
-LaneView.appearance().primaryColor = #colorLiteral(red: 0.9842069745, green: 0.9843751788, blue: 0.9841964841, alpha: 1)
-ManeuverView.appearance().backgroundColor = backgroundColor
-ManeuverView.appearance(whenContainedInInstancesOf: [InstructionsBannerView.self]).primaryColor = #colorLiteral(red: 0.9842069745, green: 0.9843751788, blue: 0.9841964841, alpha: 1)
-ManeuverView.appearance(whenContainedInInstancesOf: [InstructionsBannerView.self]).secondaryColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.5)
-ManeuverView.appearance(whenContainedInInstancesOf: [NextBannerView.self]).primaryColor = #colorLiteral(red: 0.9842069745, green: 0.9843751788, blue: 0.9841964841, alpha: 1)
-ManeuverView.appearance(whenContainedInInstancesOf: [NextBannerView.self]).secondaryColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.5)
-ManeuverView.appearance(whenContainedInInstancesOf: [StepInstructionsView.self]).primaryColor = darkGrayColor
-ManeuverView.appearance(whenContainedInInstancesOf: [StepInstructionsView.self]).secondaryColor = lightGrayColor
-MarkerView.appearance().pinColor = blueColor
-NextBannerView.appearance().backgroundColor = backgroundColor
-NextInstructionLabel.appearance().textColor = #colorLiteral(red: 0.9842069745, green: 0.9843751788, blue: 0.9841964841, alpha: 1)
-NavigationMapView.appearance().tintColor = blueColor
-NavigationMapView.appearance().routeCasingColor = #colorLiteral(red: 0.1968861222, green: 0.4148176908, blue: 0.8596113324, alpha: 1)
-NavigationMapView.appearance().trafficHeavyColor = #colorLiteral(red: 0.9995597005, green: 0, blue: 0, alpha: 1)
-NavigationMapView.appearance().trafficLowColor = blueColor
-NavigationMapView.appearance().trafficModerateColor = #colorLiteral(red: 1, green: 0.6184511781, blue: 0, alpha: 1)
-NavigationMapView.appearance().trafficSevereColor = #colorLiteral(red: 0.7458544374, green: 0.0006075350102, blue: 0, alpha: 1)
-NavigationMapView.appearance().trafficUnknownColor = blueColor
+ 
+let traitCollection = UIScreen.main.traitCollection
+ArrivalTimeLabel.appearance(for: traitCollection).textColor = lightGrayColor
+BottomBannerView.appearance(for: traitCollection).backgroundColor = secondaryBackgroundColor
+BottomPaddingView.appearance(for: traitCollection).backgroundColor = secondaryBackgroundColor
+Button.appearance(for: traitCollection).textColor = #colorLiteral(red: 0.9842069745, green: 0.9843751788, blue: 0.9841964841, alpha: 1)
+CancelButton.appearance(for: traitCollection).tintColor = lightGrayColor
+DistanceLabel.appearance(for: traitCollection, whenContainedInInstancesOf: [InstructionsBannerView.self]).unitTextColor = secondaryLabelColor
+DistanceLabel.appearance(for: traitCollection, whenContainedInInstancesOf: [InstructionsBannerView.self]).valueTextColor = primaryLabelColor
+DistanceLabel.appearance(for: traitCollection, whenContainedInInstancesOf: [StepInstructionsView.self]).unitTextColor = lightGrayColor
+DistanceLabel.appearance(for: traitCollection, whenContainedInInstancesOf: [StepInstructionsView.self]).valueTextColor = darkGrayColor
+DistanceRemainingLabel.appearance(for: traitCollection).textColor = lightGrayColor
+DismissButton.appearance(for: traitCollection).textColor = darkGrayColor
+FloatingButton.appearance(for: traitCollection).backgroundColor = #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 1)
+FloatingButton.appearance(for: traitCollection).tintColor = blueColor
+TopBannerView.appearance(for: traitCollection).backgroundColor = backgroundColor
+InstructionsBannerView.appearance(for: traitCollection).backgroundColor = backgroundColor
+LanesView.appearance(for: traitCollection).backgroundColor = darkBackgroundColor
+LaneView.appearance(for: traitCollection).primaryColor = #colorLiteral(red: 0.9842069745, green: 0.9843751788, blue: 0.9841964841, alpha: 1)
+ManeuverView.appearance(for: traitCollection).backgroundColor = backgroundColor
+ManeuverView.appearance(for: traitCollection, whenContainedInInstancesOf: [InstructionsBannerView.self]).primaryColor = #colorLiteral(red: 0.9842069745, green: 0.9843751788, blue: 0.9841964841, alpha: 1)
+ManeuverView.appearance(for: traitCollection, whenContainedInInstancesOf: [InstructionsBannerView.self]).secondaryColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.5)
+ManeuverView.appearance(for: traitCollection, whenContainedInInstancesOf: [NextBannerView.self]).primaryColor = #colorLiteral(red: 0.9842069745, green: 0.9843751788, blue: 0.9841964841, alpha: 1)
+ManeuverView.appearance(for: traitCollection, whenContainedInInstancesOf: [NextBannerView.self]).secondaryColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.5)
+ManeuverView.appearance(for: traitCollection, whenContainedInInstancesOf: [StepInstructionsView.self]).primaryColor = darkGrayColor
+ManeuverView.appearance(for: traitCollection, whenContainedInInstancesOf: [StepInstructionsView.self]).secondaryColor = lightGrayColor
+NextBannerView.appearance(for: traitCollection).backgroundColor = backgroundColor
+NextInstructionLabel.appearance(for: traitCollection).textColor = #colorLiteral(red: 0.9842069745, green: 0.9843751788, blue: 0.9841964841, alpha: 1)
+NavigationMapView.appearance(for: traitCollection).tintColor = blueColor
+NavigationMapView.appearance(for: traitCollection).routeCasingColor = #colorLiteral(red: 0.1968861222, green: 0.4148176908, blue: 0.8596113324, alpha: 1)
+NavigationMapView.appearance(for: traitCollection).trafficHeavyColor = #colorLiteral(red: 0.9995597005, green: 0, blue: 0, alpha: 1)
+NavigationMapView.appearance(for: traitCollection).trafficLowColor = blueColor
+NavigationMapView.appearance(for: traitCollection).trafficModerateColor = #colorLiteral(red: 1, green: 0.6184511781, blue: 0, alpha: 1)
+NavigationMapView.appearance(for: traitCollection).trafficSevereColor = #colorLiteral(red: 0.7458544374, green: 0.0006075350102, blue: 0, alpha: 1)
+NavigationMapView.appearance(for: traitCollection).trafficUnknownColor = blueColor
 // Customize the color that appears on the traversed section of a route
-NavigationMapView.appearance().traversedRouteColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 0.5)
-PrimaryLabel.appearance(whenContainedInInstancesOf: [InstructionsBannerView.self]).normalTextColor = primaryLabelColor
-PrimaryLabel.appearance(whenContainedInInstancesOf: [StepInstructionsView.self]).normalTextColor = darkGrayColor
-ResumeButton.appearance().backgroundColor = secondaryBackgroundColor
-ResumeButton.appearance().tintColor = blueColor
-SecondaryLabel.appearance(whenContainedInInstancesOf: [InstructionsBannerView.self]).normalTextColor = secondaryLabelColor
-SecondaryLabel.appearance(whenContainedInInstancesOf: [StepInstructionsView.self]).normalTextColor = darkGrayColor
-TimeRemainingLabel.appearance().textColor = lightGrayColor
-TimeRemainingLabel.appearance().trafficLowColor = darkBackgroundColor
-TimeRemainingLabel.appearance().trafficUnknownColor = darkGrayColor
-WayNameLabel.appearance().normalTextColor = blueColor
-WayNameView.appearance().backgroundColor = secondaryBackgroundColor
+NavigationMapView.appearance(for: traitCollection).traversedRouteColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 0.5)
+PrimaryLabel.appearance(for: traitCollection, whenContainedInInstancesOf: [InstructionsBannerView.self]).normalTextColor = primaryLabelColor
+PrimaryLabel.appearance(for: traitCollection, whenContainedInInstancesOf: [StepInstructionsView.self]).normalTextColor = darkGrayColor
+ResumeButton.appearance(for: traitCollection).backgroundColor = secondaryBackgroundColor
+ResumeButton.appearance(for: traitCollection).tintColor = blueColor
+SecondaryLabel.appearance(for: traitCollection, whenContainedInInstancesOf: [InstructionsBannerView.self]).normalTextColor = secondaryLabelColor
+SecondaryLabel.appearance(for: traitCollection, whenContainedInInstancesOf: [StepInstructionsView.self]).normalTextColor = darkGrayColor
+TimeRemainingLabel.appearance(for: traitCollection).textColor = lightGrayColor
+TimeRemainingLabel.appearance(for: traitCollection).trafficLowColor = darkBackgroundColor
+TimeRemainingLabel.appearance(for: traitCollection).trafficUnknownColor = darkGrayColor
+WayNameLabel.appearance(for: traitCollection).normalTextColor = blueColor
+WayNameView.appearance(for: traitCollection).backgroundColor = secondaryBackgroundColor
 }
 }
  
